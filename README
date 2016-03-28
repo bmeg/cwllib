@@ -1,0 +1,13 @@
+Common Workflow Language Library
+================================
+
+cwl-alt
+-------
+STILL IN DEVELOPMENT
+An alternative implementation of the CWL spec in python
+
+cwil
+----
+(sounds like quill)
+STILL IN DEVELOPMENT
+A 'high level' language abstraction that compiles into CWL [http://www.commonwl.org/] files.

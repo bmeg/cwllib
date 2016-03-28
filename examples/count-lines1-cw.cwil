@@ -1,0 +1,19 @@
+
+
+task step1 {
+  import wc-tool.km
+  File file1
+  
+}
+
+task step2 {
+  import parseInt-tool.km
+
+}
+
+workflow countlines {
+
+  call step1
+  call step2
+  
+}

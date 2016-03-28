@@ -1,0 +1,13 @@
+
+task LineCount {
+  File file1
+
+  command {
+    wc ${file1}
+  }
+
+  output {
+    File output = stdout()
+  }
+
+}
