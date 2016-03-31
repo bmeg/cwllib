@@ -26,15 +26,24 @@ class CWL_Input:
         return False
     
     def get_arg(self, data):
-        if self.is_optional and self.doc['id'] not in data:
+        if self.is_optional() and self.doc['id'] not in data:
             return []
-        a = self.format_arg(self.doc['type'], data[self.doc['id']])
+        if self.doc['id'] in data:
+            arg_data = data[self.doc['id']]
+        elif 'default' in self.doc:
+            arg_data = self.doc['default']
+        else:
+            raise Exception("Missing Data %s" % (self.doc['id']))
+        a = self.format_arg(self.doc['type'], arg_data)
         if 'inputBinding' in self.doc:
             if 'itemSeparator' in self.doc['inputBinding']:
                 a = [ self.doc['inputBinding']['itemSeparator'].join(a) ]
             if 'prefix' in self.doc['inputBinding']:
                 if isinstance(a[0], bool):
-                    return [ self.doc['inputBinding']['prefix'] ]
+                    if a[0]:
+                        return [ self.doc['inputBinding']['prefix'] ]
+                    else:
+                        return []
                 a = [self.doc['inputBinding']['prefix']] + a
             return a
         return []
@@ -46,6 +55,8 @@ class CWL_Input:
             elif format == "int":
                 return ["%d" % (data)]
             elif format ==  "boolean":
+                return [ data ]
+            elif format ==  "string":
                 return [ data ]
             else:
                 raise Exception("Unknown Format: %s" % (format))
@@ -160,7 +171,7 @@ class CWL_CommandLineTool:
             
         out = sorted( out, lambda x,y: x.cmp_pos(y) )
         #for a in out:
-        #    print a.get_pos()
+        #    print a.doc
         return out
     
 CWL_OBJ_MAP = {
